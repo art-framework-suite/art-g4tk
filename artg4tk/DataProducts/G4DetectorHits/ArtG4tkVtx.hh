@@ -7,11 +7,7 @@
 
 #include "artg4tk/DataProducts/G4DetectorHits/ArtG4tkParticle.hh"
 
-#include "art/Persistency/Common/Ptr.h"
-#include "art/Persistency/Common/PtrVector.h"
-
 #include<string>
-// #include <ostream>
 
 namespace artg4tk {
 
@@ -73,8 +69,6 @@ class ArtG4tkVtx
       CLHEP::HepLorentzVector         fPosition;
       std::string                     fPhysVolumeName;
       std::string                     fMaterialName;
-      //art::Ptr<ArtG4tkParticle>       fIncoming;
-      //art::PtrVector<ArtG4tkParticle> fOutcoming;
       ArtG4tkParticle                 fIncoming;
       std::vector<ArtG4tkParticle>    fOutcoming;
      
