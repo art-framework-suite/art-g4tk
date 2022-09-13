@@ -55,7 +55,7 @@
 #include <CLHEP/Units/SystemOfUnits.h>
 
 // -- artg4tk includes
-#include "artg4tk/lists/G4EmStandardPhysics_muplusLaser.hh"
+#include "artg4tk/lists/G4EmStandardPhysics_pseudoLaser.hh"
 
 #include "Geant4/globals.hh"
 #include "Geant4/G4ios.hh"
@@ -119,7 +119,7 @@ MyQGSP_BERT_LASER::MyQGSP_BERT_LASER(G4int ver)
 
   // EM Physics
   //RegisterPhysics( new G4EmStandardPhysics(ver) );
-  RegisterPhysics( new G4EmStandardPhysics_muplusLaser(ver) ); // -- replace with laser version
+  RegisterPhysics( new G4EmStandardPhysics_pseudoLaser(ver) ); // -- replace with laser version
 
   // Synchroton Radiation & GN Physics
   //<--RegisterPhysics( new G4EmExtraPhysics(ver) );

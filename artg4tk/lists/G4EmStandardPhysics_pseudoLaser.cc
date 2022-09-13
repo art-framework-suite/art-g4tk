@@ -26,7 +26,7 @@
 //
 //---------------------------------------------------------------------------
 //
-// ClassName:   G4EmStandardPhysics_muplusLaser
+// ClassName:   G4EmStandardPhysics_pseudoLaser
 //
 // Author:      V.Ivanchenko 09.11.2005
 //
@@ -42,7 +42,7 @@
 //----------------------------------------------------------------------------
 //
 
-#include "G4EmStandardPhysics_muplusLaser.hh"
+#include "G4EmStandardPhysics_pseudoLaser.hh"
 
 #include "Geant4/G4SystemOfUnits.hh"
 #include "Geant4/G4ParticleDefinition.hh"
@@ -90,7 +90,7 @@
 #include "Geant4/G4Positron.hh"
 #include "Geant4/G4MuonPlus.hh"
 #include "Geant4/G4MuonMinus.hh"
-#include "artg4tk/particles/G4MuonLaser.hh"
+#include "artg4tk/particles/G4PseudoLaser.hh"
 #include "Geant4/G4PionPlus.hh"
 #include "Geant4/G4PionMinus.hh"
 #include "Geant4/G4KaonPlus.hh"
@@ -111,12 +111,12 @@
 // factoryGeant4/
 #include "Geant4/G4PhysicsConstructorFactory.hh"
 //
-G4_DECLARE_PHYSCONSTR_FACTORY(G4EmStandardPhysics_muplusLaser);
+G4_DECLARE_PHYSCONSTR_FACTORY(G4EmStandardPhysics_pseudoLaser);
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-G4EmStandardPhysics_muplusLaser::G4EmStandardPhysics_muplusLaser(G4int ver, const G4String&)
-  : G4VPhysicsConstructor("G4EmStandard_muplusLaser"), verbose(ver)
+G4EmStandardPhysics_pseudoLaser::G4EmStandardPhysics_pseudoLaser(G4int ver, const G4String&)
+  : G4VPhysicsConstructor("G4EmStandard_pseudoLaser"), verbose(ver)
 {
   G4EmParameters* param = G4EmParameters::Instance();
   param->SetDefaults();
@@ -127,12 +127,12 @@ G4EmStandardPhysics_muplusLaser::G4EmStandardPhysics_muplusLaser(G4int ver, cons
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-G4EmStandardPhysics_muplusLaser::~G4EmStandardPhysics_muplusLaser()
+G4EmStandardPhysics_pseudoLaser::~G4EmStandardPhysics_pseudoLaser()
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void G4EmStandardPhysics_muplusLaser::ConstructParticle()
+void G4EmStandardPhysics_pseudoLaser::ConstructParticle()
 {
   // gamma
   G4Gamma::Gamma();
@@ -142,7 +142,7 @@ void G4EmStandardPhysics_muplusLaser::ConstructParticle()
   G4Positron::Positron();
   G4MuonPlus::MuonPlus();
   G4MuonMinus::MuonMinus();
-  G4MuonLaser::MuonLaser();
+  G4PseudoLaser::PseudoLaser();
 
   // mesons
   G4PionPlus::PionPlusDefinition();
@@ -164,7 +164,7 @@ void G4EmStandardPhysics_muplusLaser::ConstructParticle()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void G4EmStandardPhysics_muplusLaser::ConstructProcess()
+void G4EmStandardPhysics_pseudoLaser::ConstructProcess()
 {
   if(verbose > 1) {
     G4cout << "### " << GetPhysicsName() << " Construct Processes " << G4endl;
