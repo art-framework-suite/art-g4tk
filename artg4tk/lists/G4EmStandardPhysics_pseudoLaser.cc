@@ -1,48 +1,4 @@
-//
-// ********************************************************************
-// * License and Disclaimer                                           *
-// *                                                                  *
-// * The  Geant4 software  is  copyright of the Copyright Holders  of *
-// * the Geant4 Collaboration.  It is provided  under  the terms  and *
-// * conditions of the Geant4 Software License,  included in the file *
-// * LICENSE and available at  http://cern.ch/geant4/license .  These *
-// * include a list of copyright holders.                             *
-// *                                                                  *
-// * Neither the authors of this software system, nor their employing *
-// * institutes,nor the agencies providing financial support for this *
-// * work  make  any representation or  warranty, express or implied, *
-// * regarding  this  software system or assume any liability for its *
-// * use.  Please see the license in the file  LICENSE  and URL above *
-// * for the full disclaimer and the limitation of liability.         *
-// *                                                                  *
-// * This  code  implementation is the result of  the  scientific and *
-// * technical work of the GEANT4 collaboration.                      *
-// * By using,  copying,  modifying or  distributing the software (or *
-// * any work based  on the software)  you  agree  to acknowledge its *
-// * use  in  resulting  scientific  publications,  and indicate your *
-// * acceptance of all terms of the Geant4 Software license.          *
-// ********************************************************************
-//
-//
-//---------------------------------------------------------------------------
-//
-// ClassName:   G4EmStandardPhysics_muplusLaser
-//
-// Author:      V.Ivanchenko 09.11.2005
-//
-// Modified:
-// 05.01.2022 D.Rivera: imported into artg4tk based on :
-//            geant4.10.06.p01/source/physics_lists/constructors/electromagnetic/src/G4EmStandardPhysics.cc
-//            Replace the mu+ ionisation model with one that does not produce
-//            deltas to simulate the PDSP ionization laser. Also removed lines
-//            that register other undesirable processes for a laser simulation,
-//            such as Coulomb scattering, multiple scattering, pair prod.
-//            and bremsstrahlung. mu- are untouched
-//
-//----------------------------------------------------------------------------
-//
-
-#include "G4EmStandardPhysics_muplusLaser.hh"
+#include "G4EmStandardPhysics_pseudoLaser.hh"
 
 #include "Geant4/G4SystemOfUnits.hh"
 #include "Geant4/G4ParticleDefinition.hh"
@@ -90,6 +46,7 @@
 #include "Geant4/G4Positron.hh"
 #include "Geant4/G4MuonPlus.hh"
 #include "Geant4/G4MuonMinus.hh"
+#include "artg4tk/particles/G4PseudoLaser.hh"
 #include "Geant4/G4PionPlus.hh"
 #include "Geant4/G4PionMinus.hh"
 #include "Geant4/G4KaonPlus.hh"
@@ -110,12 +67,12 @@
 // factoryGeant4/
 #include "Geant4/G4PhysicsConstructorFactory.hh"
 //
-G4_DECLARE_PHYSCONSTR_FACTORY(G4EmStandardPhysics_muplusLaser);
+G4_DECLARE_PHYSCONSTR_FACTORY(G4EmStandardPhysics_pseudoLaser);
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-G4EmStandardPhysics_muplusLaser::G4EmStandardPhysics_muplusLaser(G4int ver, const G4String&)
-  : G4VPhysicsConstructor("G4EmStandard_muplusLaser"), verbose(ver)
+G4EmStandardPhysics_pseudoLaser::G4EmStandardPhysics_pseudoLaser(G4int ver, const G4String&)
+  : G4VPhysicsConstructor("G4EmStandard_pseudoLaser"), verbose(ver)
 {
   G4EmParameters* param = G4EmParameters::Instance();
   param->SetDefaults();
@@ -126,12 +83,12 @@ G4EmStandardPhysics_muplusLaser::G4EmStandardPhysics_muplusLaser(G4int ver, cons
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-G4EmStandardPhysics_muplusLaser::~G4EmStandardPhysics_muplusLaser()
+G4EmStandardPhysics_pseudoLaser::~G4EmStandardPhysics_pseudoLaser()
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void G4EmStandardPhysics_muplusLaser::ConstructParticle()
+void G4EmStandardPhysics_pseudoLaser::ConstructParticle()
 {
   // gamma
   G4Gamma::Gamma();
@@ -141,6 +98,7 @@ void G4EmStandardPhysics_muplusLaser::ConstructParticle()
   G4Positron::Positron();
   G4MuonPlus::MuonPlus();
   G4MuonMinus::MuonMinus();
+  G4PseudoLaser::PseudoLaser();
 
   // mesons
   G4PionPlus::PionPlusDefinition();
@@ -162,7 +120,7 @@ void G4EmStandardPhysics_muplusLaser::ConstructParticle()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void G4EmStandardPhysics_muplusLaser::ConstructProcess()
+void G4EmStandardPhysics_pseudoLaser::ConstructProcess()
 {
   if(verbose > 1) {
     G4cout << "### " << GetPhysicsName() << " Construct Processes " << G4endl;
@@ -282,13 +240,13 @@ void G4EmStandardPhysics_muplusLaser::ConstructProcess()
 
       // -- mu+ will ionize ONLY
       G4cout << "##### Turning off Multiple scattering, Coulomb Scattering, Pair Prodution, and Bremstrahlung for mu+!!!\n";
-      //<--ph->RegisterProcess(new G4MuIonisation(), particle); // -- ionization
-      ph->RegisterProcess(new MyG4MuIonisationNoDelta(), particle); // -- ionization
+      ph->RegisterProcess(new G4MuIonisation(), particle); // -- ionization
+      //ph->RegisterProcess(new MyG4MuIonisationNoDelta(), particle); // -- ionization
       // -- turn off Multiple scattering, bremstrahlung, pair production, and Coulomb scattering
-      //<--ph->RegisterProcess(mumsc, particle); // -- multiple scattering
-      //<--ph->RegisterProcess(mub, particle); // -- bremmstrahlung
-      //<--ph->RegisterProcess(mup, particle); // -- pair production
-      //<--ph->RegisterProcess(muss, particle); // -- Coulomb scattering
+      ph->RegisterProcess(mumsc, particle); // -- multiple scattering
+      ph->RegisterProcess(mub, particle); // -- bremmstrahlung
+      ph->RegisterProcess(mup, particle); // -- pair production
+      ph->RegisterProcess(muss, particle); // -- Coulomb scattering
 
     } else if (particleName == "alpha" ||
                particleName == "He3") {
@@ -366,6 +324,10 @@ void G4EmStandardPhysics_muplusLaser::ConstructProcess()
       ph->RegisterProcess(new G4hIonisation(), particle);
     }
   }
+
+  //Find the mulaser particle by hand
+  G4ParticleDefinition* particle = table->FindParticle("mulaser");
+  ph->RegisterProcess(new MyG4MuIonisationNoDelta(), particle); // -- ionization
 
   // Deexcitation
   //

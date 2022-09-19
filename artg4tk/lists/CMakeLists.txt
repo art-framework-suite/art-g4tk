@@ -2,7 +2,7 @@ cet_make_library(SOURCE
   ArCaptureGammas.cc
   ArParticleHPCapture.cc
   ArParticleHPCaptureFS.cc
-  G4EmStandardPhysics_muplusLaser.cc
+  G4EmStandardPhysics_pseudoLaser.cc
   MyG4BiasedBertiniNeutronBuilder.cc
   MyG4DecayPhysics.cc
   MyG4HadronPhysicsQGSP_BERT_ArHP.cc
@@ -14,6 +14,7 @@ cet_make_library(SOURCE
   MyQGSP_BERT_LASER.cc
   LIBRARIES PUBLIC
   Geant4::G4physicslists
+  artg4tk_particles
 )
 
 install_headers()
