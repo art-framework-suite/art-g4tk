@@ -1,53 +1,18 @@
 //
 // ********************************************************************
-// * License and Disclaimer                                           *
-// *                                                                  *
-// * The  Geant4 software  is  copyright of the Copyright Holders  of *
-// * the Geant4 Collaboration.  It is provided  under  the terms  and *
-// * conditions of the Geant4 Software License,  included in the file *
-// * LICENSE and available at  http://cern.ch/geant4/license .  These *
-// * include a list of copyright holders.                             *
-// *                                                                  *
-// * Neither the authors of this software system, nor their employing *
-// * institutes,nor the agencies providing financial support for this *
-// * work  make  any representation or  warranty, express or implied, *
-// * regarding  this  software system or assume any liability for its *
-// * use.  Please see the license in the file  LICENSE  and URL above *
-// * for the full disclaimer and the limitation of liability.         *
-// *                                                                  *
-// * This  code  implementation is the result of  the  scientific and *
-// * technical work of the GEANT4 collaboration.                      *
-// * By using,  copying,  modifying or  distributing the software (or *
-// * any work based  on the software)  you  agree  to acknowledge its *
-// * use  in  resulting  scientific  publications,  and indicate your *
-// * acceptance of all terms of the Geant4 Software license.          *
+// This is a variation of the file provided by the
+// Geant4 collaboration (https://geant4.web.cern.ch/):
+// QGSP_BERT_HP.cc
+// (see https://gitlab.cern.ch/geant4/geant4/)
+//
+// The file was adjusted to work with artg4tk and/or to implement
+// features relevant to the simulation of liquid Argon TPC's. 
+// 
+// For the original Geant4 License and Disclaimer see:
+// https://gitlab.cern.ch/geant4/geant4/-/blob/master/LICENSE
+//
 // ********************************************************************
 //
-//
-//---------------------------------------------------------------------------
-//
-// ClassName:   QGSP_BERT
-//
-// Author: 2002 J.P. Wellisch
-//
-// Modified:
-// 15.12.2005 G.Folger: migration to non static particles, rename components,
-//                      ordering of registrations
-// 08.06.2006 V.Ivanchenko: migration to CHIPS stopping
-// 15.06.2006 G.Folger: Migrate to HadronElasticPhysics using improved elastic
-// 26.04.2007 G.Folger: Enable quasielastic for QGS string model
-// 16.05.2007 V.Ivanchenko: rename EM builders
-// 04.06.2010 G.Folger: Use new ctor for builders
-// 16.08.2010 H.Kurashige: Remove inclusion of G4ParticleWithCuts
-// 16.10.2012 A.Ribon: Use new default stopping
-// 19.01.2021 D.Rivera: imported into artg4tk based on :
-//            geant4.10.06.p01/source/physics_lists/lists/src/QGSP_BERT_HP.cc
-//            Converted this to an extensible physics list and registered it.
-//            Included custom version of G4HadronPhysicsQGSP_BERT_HP.
-//
-//----------------------------------------------------------------------------
-//
-
 #include <iomanip>
 
 #include <CLHEP/Units/SystemOfUnits.h>
@@ -73,10 +38,9 @@
 #include "Geant4/G4StoppingPhysics.hh"
 #include "Geant4/G4HadronElasticPhysicsHP.hh"
 
-//#include "Geant4/G4HadronPhysicsQGSP_BERT_HP.hh"
 
 /////////////////////////////////////////////////////////////////////////////
-// The following change is the _only_ required changed to move from
+// The following change is the _only_ required change to move from
 // the non-extensible factory to the exensible factory.  All other changes
 // relative to the "factory" example are there to demonstrate new features.
 /////////////////////////////////////////////////////////////////////////////

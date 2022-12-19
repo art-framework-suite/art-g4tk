@@ -1,37 +1,18 @@
 //
 // ********************************************************************
-// * License and Disclaimer                                           *
-// *                                                                  *
-// * The  Geant4 software  is  copyright of the Copyright Holders  of *
-// * the Geant4 Collaboration.  It is provided  under  the terms  and *
-// * conditions of the Geant4 Software License,  included in the file *
-// * LICENSE and available at  http://cern.ch/geant4/license .  These *
-// * include a list of copyright holders.                             *
-// *                                                                  *
-// * Neither the authors of this software system, nor their employing *
-// * institutes,nor the agencies providing financial support for this *
-// * work  make  any representation or  warranty, express or implied, *
-// * regarding  this  software system or assume any liability for its *
-// * use.  Please see the license in the file  LICENSE  and URL above *
-// * for the full disclaimer and the limitation of liability.         *
-// *                                                                  *
-// * This  code  implementation is the result of  the  scientific and *
-// * technical work of the GEANT4 collaboration.                      *
-// * By using,  copying,  modifying or  distributing the software (or *
-// * any work based  on the software)  you  agree  to acknowledge its *
-// * use  in  resulting  scientific  publications,  and indicate your *
-// * acceptance of all terms of the Geant4 Software license.          *
+// This is a variation of the file provided by the
+// Geant4 collaboration (https://geant4.web.cern.ch/):
+// G4ParticleHPCapture.cc
+// (see https://gitlab.cern.ch/geant4/geant4/)
+//
+// The file was adjusted to work with artg4tk and/or to implement
+// features relevant to the simulation of liquid Argon TPC's. 
+// 
+// For the original Geant4 License and Disclaimer see:
+// https://gitlab.cern.ch/geant4/geant4/-/blob/master/LICENSE
+//
 // ********************************************************************
 //
-// neutron_hp -- source file
-// J.P. Wellisch, Nov-1996
-// A prototype of the low energy neutron transport model.
-//
-// 070523 bug fix for G4FPE_DEBUG on by A. Howard ( and T. Koi)
-//
-// P. Arce, June-2014 Conversion neutron_hp to particle_hp
-//
-
 // -- artg4tk includes
 #include "artg4tk/lists/ArParticleHPCapture.hh"
 #include "artg4tk/lists/ArParticleHPCaptureFS.hh"
