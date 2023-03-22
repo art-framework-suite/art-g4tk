@@ -22,7 +22,7 @@
 #define artg4tk_services_DetectorHolder_service_hh
 
 // Includes
-#include "art/Framework/Core/Frameworkfwd.h"
+#include "art/Framework/Core/fwd.h"
 #include "art/Framework/Principal/fwd.h"
 #include "art/Framework/Services/Registry/ServiceDeclarationMacros.h"
 #include "fhiclcpp/fwd.h"
