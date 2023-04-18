@@ -27,7 +27,7 @@ public:
 
 protected:
   void Neutron() override;
-  void ExtraConfiguration() override;
+  void ExtraConfiguration();
 };
 
 

@@ -3,6 +3,7 @@
 #include "artg4tk/pluginActions/physicsList/PhysicsList_service.hh"
 #include "fhiclcpp/ParameterSet.h"
 
+#include "G4Version.hh"
 #include "Geant4/G4PhysListFactoryAlt.hh"
 #include "Geant4/G4PhysListRegistry.hh"
 #include "Geant4/G4PhysicsConstructorRegistry.hh"
@@ -12,6 +13,10 @@
 #include "Geant4/G4NeutronTrackingCut.hh"
 #include "Geant4/G4OpticalPhysics.hh"
 #include "Geant4/G4SystemOfUnits.hh"
+
+#if G4VERSION_NUMBER >= 110
+#include "Geant4/G4OpticalParameters.hh"
+#endif
 
 #include <fstream>
 #include <memory>
@@ -76,6 +81,7 @@ artg4tk::PhysicsListService::makePhysicsList()
   }
 
   if (enableOptical_) {
+ #if G4VERSION_NUMBER < 110
     G4OpticalPhysics* opticalPhysics = (G4OpticalPhysics*)phys->GetPhysics("Optical");
     opticalPhysics->Configure(kCerenkov, enableCerenkov_);
     opticalPhysics->SetCerenkovStackPhotons(CerenkovStackPhotons_);
@@ -95,6 +101,24 @@ artg4tk::PhysicsListService::makePhysicsList()
     opticalPhysics->Configure(kBoundary, enableBoundary_);
     opticalPhysics->SetVerboseLevel(verbositylevel_);
     opticalPhysics->Configure(kWLS, enableWLS_);
+#else
+    G4OpticalParameters::Instance()->SetProcessActivation("Cerenkov", enableCerenkov_);
+    G4OpticalParameters::Instance()->SetCerenkovStackPhotons(CerenkovStackPhotons_);
+    G4OpticalParameters::Instance()->SetProcessActivation("Scintillation", enableScintillation_);
+    G4OpticalParameters::Instance()->SetScintStackPhotons(ScintillationStackPhotons_);
+    G4OpticalParameters::Instance()->SetScintByParticleType(ScintillationByParticleType_);
+    G4OpticalParameters::Instance()->SetScintTrackInfo(ScintillationTrackInfo_);
+    G4OpticalParameters::Instance()->SetScintTrackSecondariesFirst(true); // only relevant if we actually stack and trace the optical photons
+    G4OpticalParameters::Instance()->SetCerenkovTrackSecondariesFirst(true); // only relevant if we actually stack and trace the optical photons
+    G4OpticalParameters::Instance()->SetCerenkovMaxPhotonsPerStep(CerenkovMaxNumPhotons_);
+    G4OpticalParameters::Instance()->SetCerenkovMaxBetaChange(CerenkovMaxBetaChange_);
+    G4OpticalParameters::Instance()->SetProcessActivation("OpAbsorption", enableAbsorption_);
+    G4OpticalParameters::Instance()->SetProcessActivation("OpRayleigh", enableRayleigh_);
+    G4OpticalParameters::Instance()->SetProcessActivation("OpMieHG", enableMieHG_);
+    G4OpticalParameters::Instance()->SetProcessActivation("OpBoundary", enableBoundary_);
+    G4OpticalParameters::Instance()->SetVerboseLevel(verbositylevel_);
+    G4OpticalParameters::Instance()->SetProcessActivation("OpWLS", enableWLS_);
+#endif
   }
   if (enableNeutronLimit_) {
     G4NeutronTrackingCut* neutrcut = (G4NeutronTrackingCut*)phys->GetPhysics("neutronTrackingCut");

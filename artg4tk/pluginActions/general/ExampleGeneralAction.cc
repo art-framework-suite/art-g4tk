@@ -93,7 +93,7 @@ artg4tk::ExampleGeneralActionService::userSteppingAction(const G4Step* currStep)
     return;
   }
 #else
-  if (thePrePVname.contains("calo")) {
+  if (G4StrUtil::contains(thePrePVname,"calo")) {
     return;
   }
 #endif
@@ -107,7 +107,7 @@ artg4tk::ExampleGeneralActionService::userSteppingAction(const G4Step* currStep)
     return;
   }
 #else
-  if (!(thePrePVname.contains("calo"))) {
+  if (!((G4StrUtil::contains(thePrePVname,"calo")))) {
     return;
   }
 #endif
