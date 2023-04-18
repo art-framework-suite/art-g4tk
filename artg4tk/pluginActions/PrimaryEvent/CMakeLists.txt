@@ -1,10 +1,12 @@
-art_make(
-  SERVICE_LIBRARIES
-    art::Framework_Principal
-    artg4tk_actionBase
-    artg4tk_services_ActionHolder_service
-    ${CLHEP}
-    ${G4GLOBAL}
-    ${G4PARTICLES}
-    messagefacility::MF_MessageLogger
+cet_build_plugin(PrimaryEventAction artg4tk::ActionService
+  LIBRARIES
+    PUBLIC
+      Geant4::G4global
+    PRIVATE
+      art::Framework_Principal
+      artg4tk::services_ActionHolder_service
+      Geant4::G4event
 )
+
+install_headers()
+install_source()

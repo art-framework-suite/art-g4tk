@@ -1,15 +1,19 @@
-
-include_directories( $ENV{GEANT4_FQ_DIR}/include )
+include(ArtDictionary)
+include(CetMake)
+include(BuildPlugins)
 
 add_subdirectory(actionBase)
-add_subdirectory(Analysis)
 add_subdirectory(Core)
+
+cet_collect_plugin_builders(Modules artg4tk::ServiceBuilders)
+include(artg4tk::ServiceBuilders)
+
+add_subdirectory(Analysis)
 add_subdirectory(DataProducts)
 add_subdirectory(EventGenerators)
-#add_subdirectory(ExpDataAccess)
-#add_subdirectory(G4PhysModelParamStudy)
 add_subdirectory(geantInit)
-#add_subdirectory(lists)
+add_subdirectory(particles)
+add_subdirectory(lists)
 add_subdirectory(pluginActions)
 add_subdirectory(pluginDetectors)
 add_subdirectory(services)

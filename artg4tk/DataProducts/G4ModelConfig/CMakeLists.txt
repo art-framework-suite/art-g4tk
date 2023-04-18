@@ -1,3 +1,7 @@
-art_make(LIB_LIBRARIES cetlib_except fhiclcpp)
+art_dictionary()
+
+cet_make_library(SOURCE ArtG4tkModelConfig.cc
+  LIBRARIES PRIVATE fhiclcpp::fhiclcpp)
 
 install_headers()
+install_source()

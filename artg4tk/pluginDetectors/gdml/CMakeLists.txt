@@ -1,23 +1,44 @@
-art_make(
-  LIB_LIBRARIES
-    artg4tk_DataProducts_G4DetectorHits
-    ${CLHEP}
-    ${G4DIGITS_HITS}
-    ${G4EVENT}
-    ${G4GEOMETRY}
-    ${G4GLOBAL}
-    ${G4GRAPHICS_REPS}
-    ${G4PARTICLES}
-    ${G4PERSISTENCY}
-    ${G4TRACK}
-    ${XERCESC}
-  SERVICE_LIBRARIES
-    art::Framework_Core
-    art::Framework_Principal
-    artg4tk_pluginDetectors_gdml
-    artg4tk_services_DetectorHolder_service
-    art::Persistency_Provenance
-    ${G4MATERIALS}
+art_dictionary()
+
+cet_make_library(SOURCE
+    CalorimeterSD.cc
+    ColorReader.cc
+    DRCalorimeterSD.cc
+    HadIntAndEdepTrkSD.cc
+    HadInteractionSD.cc
+    PhotonSD.cc
+    TrackerSD.cc
+    LIBRARIES
+    PUBLIC
+    artg4tk::DataProducts_G4DetectorHits
+    Geant4::G4digits_hits
+    Geant4::G4persistency
+    Geant4::G4track
+    canvas::canvas
+    PRIVATE
+    Geant4::G4event
+    Geant4::G4geometry
+    Geant4::G4global
+    Geant4::G4graphics_reps
+    Geant4::G4particles
+    Geant4::G4processes
+    Geant4::G4tracking
+  )
+
+cet_build_plugin(GDMLDetector artg4tk::DetectorService
+  LIBRARIES
+  PUBLIC
+  messagefacility::MF_MessageLogger
+  PRIVATE
+  artg4tk::pluginDetectors_gdml
+  artg4tk::services_DetectorHolder_service
+  artg4tk::DataProducts_G4DetectorHits
+  art::Framework_Core
+  Geant4::G4digits_hits
+  Geant4::G4geometry
+  Geant4::G4processes
+  Geant4::G4global
 )
 
 install_headers()
+install_source()

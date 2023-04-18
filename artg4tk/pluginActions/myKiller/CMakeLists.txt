@@ -1,7 +1,11 @@
-art_make(
-  SERVICE_LIBRARIES
-    artg4tk_actionBase
-    artg4tk_services_ActionHolder_service
-    ${CLHEP}
-    messagefacility::MF_MessageLogger
+cet_build_plugin(KillerAction artg4tk::ActionService
+  LIBRARIES
+  PUBLIC
+  messagefacility::MF_MessageLogger
+  PRIVATE
+  Geant4::G4processes
+  Geant4::G4track
 )
+
+install_headers()
+install_source()

@@ -1,7 +1,0 @@
-add_subdirectory(AnalysisBase)
-add_subdirectory(AnalysisModules)
-add_subdirectory(AnalysisProducts)
-add_subdirectory(ApplicationModules)
-add_subdirectory(G4Components)
-add_subdirectory(G4Services)
-add_subdirectory(StatAnalysisTools)
