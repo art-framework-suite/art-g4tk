@@ -10,6 +10,7 @@
 #include "artg4tk/pluginActions/general/ExampleGeneralAction_service.hh"
 
 // G4 includes
+#include "G4Version.hh"
 #include "Geant4/G4EventManager.hh"
 #include "Geant4/G4MuonMinus.hh"
 #include "Geant4/G4MuonPlus.hh"
@@ -87,18 +88,29 @@ artg4tk::ExampleGeneralActionService::userSteppingAction(const G4Step* currStep)
   G4StepPoint* thePrePoint = currStep->GetPreStepPoint();
   G4VPhysicalVolume* thePrePV = thePrePoint->GetPhysicalVolume();
   G4String thePrePVname = thePrePV->GetName();
+#if G4VERSION_NUMBER < 110
   if (thePrePVname(0, 4) == "calo") {
     return;
   }
-
+#else
+  if (thePrePVname.contains("calo")) {
+    return;
+  }
+#endif
   // Check whether the step ended outside the calorimeter. If so, we don't
   // need to suspend it.
   G4StepPoint* thePostPoint = currStep->GetPostStepPoint();
   G4VPhysicalVolume* thePostPV = thePostPoint->GetPhysicalVolume();
   G4String thePostPVname = thePostPV->GetName();
+#if G4VERSION_NUMBER < 110
   if (thePostPVname(0, 4) != "calo") {
     return;
   }
+#else
+  if (!(thePrePVname.contains("calo"))) {
+    return;
+  }
+#endif
 
   // Any step that has survived all those checks:
   // * is alive

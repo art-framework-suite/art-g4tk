@@ -19,8 +19,8 @@
 #include "artg4tk/lists/MyG4HadronPhysicsQGSP_BERT_ArHP.hh"
 #include "artg4tk/lists/MyG4NeutronPHPBuilder.hh"
 
-//#include "Geant4/G4HadronPhysicsQGSP_BERT_HP.hh"
 
+#include "G4Version.hh"
 #include "Geant4/G4ParticleDefinition.hh"
 #include "Geant4/G4ParticleTable.hh"
 #include "Geant4/G4SystemOfUnits.hh"
@@ -31,9 +31,12 @@
 #include "Geant4/G4FTFPNeutronBuilder.hh"
 #include "Geant4/G4NeutronBuilder.hh"
 #include "Geant4/G4QGSPNeutronBuilder.hh"
-//#include "Geant4/G4NeutronPHPBuilder.hh"
 
+#if G4VERSION_NUMBER < 110
 #include "Geant4/G4HadronCaptureProcess.hh"
+#else
+#include "Geant4/G4NeutronCaptureProcess.hh"
+#endif
 #include "Geant4/G4LFission.hh"
 #include "Geant4/G4NeutronCaptureXS.hh"
 #include "Geant4/G4NeutronRadCapture.hh"

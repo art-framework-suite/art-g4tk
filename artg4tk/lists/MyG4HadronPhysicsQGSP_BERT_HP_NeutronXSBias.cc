@@ -2,6 +2,7 @@
 
 #include "MyG4HadronPhysicsQGSP_BERT_HP_NeutronXSBias.hh"
 
+#include "G4Version.hh"
 #include "Geant4/G4ParticleDefinition.hh"
 #include "Geant4/G4ParticleTable.hh"
 #include "Geant4/G4SystemOfUnits.hh"
@@ -16,7 +17,11 @@
 
 #include "Geant4/G4ComponentGGHadronNucleusXsc.hh"
 #include "Geant4/G4CrossSectionInelastic.hh"
+#if G4VERSION_NUMBER < 110
 #include "Geant4/G4HadronCaptureProcess.hh"
+#else
+#include "Geant4/G4NeutronCaptureProcess.hh"
+#endif
 #include "Geant4/G4LFission.hh"
 #include "Geant4/G4NeutronCaptureXS.hh"
 #include "Geant4/G4NeutronRadCapture.hh"
@@ -184,7 +189,12 @@ MyG4HadronPhysicsQGSP_BERT_HP_NeutronXSBias::ConstructProcess()
     }
   }
   if (!capture) {
+
+#if G4VERSION_NUMBER < 110
     capture = new G4HadronCaptureProcess("nCapture");
+#else
+    capture = new G4NeutronCaptureProcess("nCapture");
+#endif
     pmanager->AddDiscreteProcess(capture);
   }
   tpdata->xsNeutronCaptureXS =
@@ -196,7 +206,11 @@ MyG4HadronPhysicsQGSP_BERT_HP_NeutronXSBias::ConstructProcess()
   theNeutronRadCapture->SetMinEnergy(19.9 * MeV);
   capture->RegisterMe(theNeutronRadCapture);
   if (!fission) {
-    fission = new G4HadronFissionProcess("nFission");
+#if G4VERSION_NUMBER < 110
+        fission = new G4HadronFissionProcess("nFission");
+#else
+	fission = new G4NeutronFissionProcess("nFission");
+#endif
     pmanager->AddDiscreteProcess(fission);
   }
   G4LFission* theNeutronLEPFission = new G4LFission();

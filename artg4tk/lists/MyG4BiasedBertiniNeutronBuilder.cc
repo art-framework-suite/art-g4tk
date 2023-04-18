@@ -1,5 +1,5 @@
+#include "G4Version.hh"
 #include "MyG4BiasedBertiniNeutronBuilder.hh"
-//#include "Geant4/G4BertiniNeutronBuilder.hh"
 #include "Geant4/G4ParticleDefinition.hh"
 #include "Geant4/G4ParticleTable.hh"
 #include "Geant4/G4ProcessManager.hh"
@@ -24,7 +24,11 @@ MyG4BiasedBertiniNeutronBuilder::MyG4BiasedBertiniNeutronBuilder(G4double XSMult
 }
 
 void
+#if G4VERSION_NUMBER < 110
 MyG4BiasedBertiniNeutronBuilder::Build(G4NeutronInelasticProcess* aP)
+#else
+MyG4BiasedBertiniNeutronBuilder::Build(G4HadronInelasticProcess* aP)
+#endif
 {
   theModel->SetMinEnergy(theMin);
   theModel->SetMaxEnergy(theMax);
@@ -37,7 +41,7 @@ MyG4BiasedBertiniNeutronBuilder::Build(G4NeutronInelasticProcess* aP)
 void
 MyG4BiasedBertiniNeutronBuilder::Build(G4HadronElasticProcess*)
 {}
-
+#if G4VERSION_NUMBER < 110
 void
 MyG4BiasedBertiniNeutronBuilder::Build(G4HadronFissionProcess*)
 {}
@@ -45,5 +49,13 @@ MyG4BiasedBertiniNeutronBuilder::Build(G4HadronFissionProcess*)
 void
 MyG4BiasedBertiniNeutronBuilder::Build(G4HadronCaptureProcess*)
 {}
+#else
+void
+MyG4BiasedBertiniNeutronBuilder::Build(G4NeutronFissionProcess*)
+{}
 
+void
+MyG4BiasedBertiniNeutronBuilder::Build(G4NeutronCaptureProcess*)
+{}
+#endif
 // 2002 by J.P. Wellisch

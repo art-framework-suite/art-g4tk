@@ -81,7 +81,7 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 
 #include "MyG4MuIonisationNoDelta.hh"
-
+#include "Geant4/G4Version.hh"
 #include "Geant4/G4PhysicalConstants.hh"
 #include "Geant4/G4SystemOfUnits.hh"
 #include "Geant4/G4Electron.hh"
@@ -95,7 +95,9 @@
 
 #include "Geant4/G4UniversalFluctuation.hh"
 #include "Geant4/G4IonFluctuations.hh"
+#if G4VERSION_NUMBER < 110
 #include "Geant4/G4BohrFluctuations.hh"
+#endif
 #include "Geant4/G4UnitsTable.hh"
 #include "Geant4/G4ICRU73QOModel.hh"
 #include "Geant4/G4EmParameters.hh"

@@ -34,13 +34,10 @@
 #include "Geant4/G4EmExtraPhysics.hh"
 #include "Geant4/G4EmStandardPhysics.hh"
 #include "Geant4/G4HadronElasticPhysicsHP.hh"
-<<<<<<< HEAD
-
-=======
 #include "Geant4/G4IonPhysics.hh"
 #include "Geant4/G4RadioactiveDecayPhysics.hh"
 #include "Geant4/G4StoppingPhysics.hh"
->>>>>>> origin/lar_v11_00_br
+
 
 /////////////////////////////////////////////////////////////////////////////
 // The following change is the _only_ required change to move from

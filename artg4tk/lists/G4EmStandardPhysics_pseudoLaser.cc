@@ -1,3 +1,4 @@
+#include "G4Version.hh"
 #include "G4EmStandardPhysics_pseudoLaser.hh"
 
 #include "Geant4/G4SystemOfUnits.hh"
@@ -38,8 +39,9 @@
 
 #include "Geant4/G4hIonisation.hh"
 #include "Geant4/G4ionIonisation.hh"
+#if G4VERSION_NUMBER < 110
 #include "Geant4/G4alphaIonisation.hh"
-
+#endif
 #include "Geant4/G4ParticleTable.hh"
 #include "Geant4/G4Gamma.hh"
 #include "Geant4/G4Electron.hh"

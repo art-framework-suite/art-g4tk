@@ -18,25 +18,25 @@
 
 // -- artg4tk includes
 #include "artg4tk/lists/ArParticleHPCapture.hh"
-
+#include "G4Version.hh"
 #include "Geant4/globals.hh"
-
+#if G4VERSION_NUMBER < 110
 #include "Geant4/G4HadronCaptureProcess.hh"
-#include "Geant4/G4HadronElasticProcess.hh"
 #include "Geant4/G4HadronFissionProcess.hh"
 #include "Geant4/G4NeutronInelasticProcess.hh"
+#else
+#include "Geant4/G4NeutronCaptureProcess.hh"
+#include "Geant4/G4NeutronFissionProcess.hh"
+#include "Geant4/G4HadronInelasticProcess.hh"
+#endif
+#include "Geant4/G4HadronElasticProcess.hh"
 #include "Geant4/G4VNeutronBuilder.hh"
-
 #include "Geant4/G4ParticleHPElastic.hh"
 #include "Geant4/G4ParticleHPElasticData.hh"
 #include "Geant4/G4ParticleHPFission.hh"
 #include "Geant4/G4ParticleHPFissionData.hh"
-<<<<<<< HEAD
-=======
 #include "Geant4/G4ParticleHPInelastic.hh"
 #include "Geant4/G4ParticleHPInelasticData.hh"
-//#include "Geant4/G4ParticleHPCapture.hh"
->>>>>>> origin/lar_v11_00_br
 #include "Geant4/G4ParticleHPCaptureData.hh"
 
 class MyG4NeutronPHPBuilder : public G4VNeutronBuilder {
@@ -46,10 +46,15 @@ public:
 
 public:
   void Build(G4HadronElasticProcess* aP) final override;
+#if G4VERSION_NUMBER < 110
   void Build(G4HadronFissionProcess* aP) final override;
   void Build(G4HadronCaptureProcess* aP) final override;
   void Build(G4NeutronInelasticProcess* aP) final override;
-
+#else
+  void Build(G4NeutronFissionProcess* aP) final override;
+  void Build(G4NeutronCaptureProcess* aP) final override;
+  void Build(G4HadronInelasticProcess* aP) final override;
+#endif
   virtual void
   SetMinEnergy(G4double aM) final override
   {
