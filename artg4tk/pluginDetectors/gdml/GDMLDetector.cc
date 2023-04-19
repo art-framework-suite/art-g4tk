@@ -123,7 +123,7 @@ artg4tk::GDMLDetectorService::doBuildLVs()
   G4GDMLParser* parser = new G4GDMLParser(fReader);
   parser->SetOverlapCheck(checkoverlaps_);
 
-  parser->Read(gdmlFileName_);
+  parser->Read(gdmlFileName_,false);
   G4VPhysicalVolume* World = parser->GetWorldVolume();
   std::cout << World->GetTranslation() << std::endl << std::endl;
   std::cout << "Found World:  " << World->GetName() << std::endl;
