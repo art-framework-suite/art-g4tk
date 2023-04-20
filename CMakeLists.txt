@@ -26,6 +26,7 @@ cmake_minimum_required (VERSION 3.20 FATAL_ERROR)
 
 find_package(cetmodules 3.10.00 REQUIRED) # For FindGeant4.cmake
 project(artg4tk VERSION 12.00.00 LANGUAGES CXX)
+#option(WITH_G4CXOPTICKS "Build example with OPTICKS" OFF)
 
 include(CetCMakeEnv)
 cet_cmake_env()
@@ -46,10 +47,17 @@ find_package(cetlib_except REQUIRED EXPORT)
 find_package(Range-v3 REQUIRED EXPORT)
 find_package(ROOT COMPONENTS Core Hist Tree REQUIRED EXPORT)
 
+#if(WITH_G4CXOPTICKS)
+#  message(STATUS "WITH_G4CXOPTICKS is set")
+#endif()
+
 cet_cmake_module_directories(Modules BINARY)
 
 add_subdirectory(artg4tk)
 add_subdirectory(examples)
 add_subdirectory(fcl)
+add_subdirectory(test)
 
+# packaging utility
+# this has to be last
 cet_cmake_config()

@@ -1,0 +1,85 @@
+#include "standard_physicslist.fcl"
+process_name:processA
+source: {
+  module_type: EmptyEvent
+  maxEvents:  2
+}
+services: {
+  message : {
+     debugModules : ["*"]
+     suppressInfo : []    
+     destinations : {
+       LogToConsole : {
+         type : "cout"
+         threshold : "DEBUG"
+         categories : {
+           default : { limit : 50 }
+         }
+       }
+     }
+  }
+  TFileService :
+  {
+    fileName      : "eic_Crystal_PbF2.root"
+  }
+    DetectorHolder: {}
+    ActionHolder: {}
+    RandomNumberGenerator: {}
+    PhysicsListHolder: {} 
+    PhysicsList: @local::standard_physicslist
+
+    // Detector(s) for the simulation
+    GDMLDetector : 
+    {
+    category: "world"
+    gdmlFileName_ : "eic_CrystalCal_PbF2.gdml"
+    CheckOverlaps: false 
+    }   
+
+
+    ExampleGeneralAction: {
+      name: "exampleGeneral"
+    }
+      myParticleGunAction: {
+      name: "myParticleGun"	
+      NParticle: 1
+      Name: "pi+"
+      Direction: [ 0,  0,  1  ]
+      Energy: 5.
+      Position: [ 0,  0,  -10.  ]
+    }
+}
+
+outputs: {
+out1: {
+  module_type: RootOutput   
+  fileName: "multiCrystalout.root"
+  }
+}
+
+physics: {
+  producers: {
+    artg4Main: {
+      module_type: artg4Main
+      enableVisualization: false
+      uiAtEndEvent: false
+      uiAtBeginRun: false
+      macroPath: ".:./macros"
+      visMacro: "vis.mac"
+      //afterEvent: pause
+    }
+  }
+  analyzers: {
+   CheckPhotonHits: {   module_type: CheckPhotonHits
+		  DumpGDML: false}	
+   CheckDRCalorimeterHits: {   module_type: CheckDRCalorimeterHits
+		  DumpGDML: false
+                  pstl: @local::standard_physicslist}
+}
+
+  path1: [ artg4Main ]
+  stream1:  [ out1, CheckPhotonHits,CheckDRCalorimeterHits ]
+
+  trigger_paths: [ path1 ]
+  end_paths: [ stream1 ]
+}
