@@ -1,8 +1,8 @@
-#include "standard_physicslist.fcl"
+#include "teststandard_physicslist.fcl"
 process_name:processA
 source: {
   module_type: EmptyEvent
-  maxEvents:  2
+  maxEvents:  10
 }
 services: {
   message : {
@@ -20,19 +20,19 @@ services: {
   }
   TFileService :
   {
-    fileName      : "eic_Crystal_PbF2.root"
+    fileName      : "testeic_Crystal_PbF2.root"
   }
     DetectorHolder: {}
     ActionHolder: {}
     RandomNumberGenerator: {}
     PhysicsListHolder: {} 
-    PhysicsList: @local::standard_physicslist
+    PhysicsList: @local::teststandard_physicslist
 
     // Detector(s) for the simulation
     GDMLDetector : 
     {
     category: "world"
-    gdmlFileName_ : "eic_CrystalCal_PbF2.gdml"
+    gdmlFileName_ : "testeic_CrystalCal_PbF2.gdml"
     CheckOverlaps: false 
     }   
 
@@ -74,7 +74,7 @@ physics: {
 		  DumpGDML: false}	
    CheckDRCalorimeterHits: {   module_type: CheckDRCalorimeterHits
 		  DumpGDML: false
-                  pstl: @local::standard_physicslist}
+                  pstl: @local::teststandard_physicslist}
 }
 
   path1: [ artg4Main ]

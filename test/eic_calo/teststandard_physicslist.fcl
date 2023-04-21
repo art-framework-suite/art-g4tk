@@ -1,4 +1,4 @@
-    standard_physicslist: { 
+    teststandard_physicslist: { 
 	PhysicsListName: "FTFP_BERT"
 	DumpList: true	
   	enableCerenkov: true
