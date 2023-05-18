@@ -1,6 +1,6 @@
 cet_make_library(SOURCE
   StringIDs.cc
-  util.cc
+#  util.cc
   LIBRARIES
   PUBLIC
   Geant4::G4graphics_reps
