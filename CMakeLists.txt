@@ -4,20 +4,8 @@
 # NOTE: Build may be steered for internal development purposes by
 #       setting the following CMake variables in cache (e.g. with cmake
 #       -DXXXX:BOOL=ON):
-#
-#       * artg4tk_ExpDataAccess
-#
-#         Build the ExpDataAccess internal library.
-#
-#       * artg4tk_G4PhysModelParamStudy
-#
-#         Build the G4PhysModelParamStudy internal code set (implies
-#         artg4tk_ExpDataAccess).
-#
-#       * artg4tk_INTERNAL
-#
-#         Build all internal code (including RooMUTools if
-#         ENV{ROOMU_SYS} is defined and valid).
+#       
+#       * WITH_G4CXOPTICKS "Build with OPTICKS"
 #
 # Updated for cetmodules 3.10.00 and bitrot in internal code resolved -
 # as far as possible without tests - by CG 2022-04-06.
@@ -26,7 +14,7 @@ cmake_minimum_required (VERSION 3.20 FATAL_ERROR)
 
 find_package(cetmodules 3.10.00 REQUIRED) # For FindGeant4.cmake
 project(artg4tk VERSION 12.00.00 LANGUAGES CXX)
-#option(WITH_G4CXOPTICKS "Build example with OPTICKS" OFF)
+option(WITH_G4CXOPTICKS "Build example with OPTICKS" OFF)
 
 include(CetCMakeEnv)
 cet_cmake_env()
@@ -46,10 +34,31 @@ find_package(fhiclcpp REQUIRED EXPORT)
 find_package(cetlib_except REQUIRED EXPORT)
 find_package(Range-v3 REQUIRED EXPORT)
 find_package(ROOT COMPONENTS Core Hist Tree REQUIRED EXPORT)
+ message(STATUS "CMAKE_PREFIX_PATH: ${CMAKE_PREFIX_PATH}")
+if(WITH_G4CXOPTICKS)
+if(CMAKE_PREFIX_PATH)
+ message(STATUS "CMAKE_PREFIX_PATH: ${CMAKE_PREFIX_PATH}")
+endif()
+if(OPTICKS_PREFIX)
+ message(STATUS "OPTICKS_PREFIX: ${OPTICKS_PREFIX}")
+endif()
+if (CMAKE_MODULE_PATH)
+ message(STATUS "CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}")
+endif()
+  message(STATUS "WITH_G4CXOPTICKS is set")
+  list(APPEND CMAKE_MODULE_PATH "$ENV{OPTICKS_HOME}/cmake/Modules")
+  list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/modules")
+  message(STATUS "*************************************************************")
+  message(STATUS "CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}")
+  message(STATUS "OPTICKS_HOME:  $ENV{OPTICKS_HOME}")
+  message(STATUS "*************************************************************")
+  include(OpticksBuildOptions)
+  find_package(G4CX REQUIRED CONFIG)
+  find_package(U4 REQUIRED CONFIG)
+  find_package(ExtG4 REQUIRED CONFIG)
+  find_package(CSG_GGeo REQUIRED CONFIG)
+endif()
 
-#if(WITH_G4CXOPTICKS)
-#  message(STATUS "WITH_G4CXOPTICKS is set")
-#endif()
 
 cet_cmake_module_directories(Modules BINARY)
 
