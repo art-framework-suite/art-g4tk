@@ -52,7 +52,12 @@ endif()
   message(STATUS "OPTICKS_HOME:  $ENV{OPTICKS_HOME}")
   message(STATUS "*************************************************************")
   include(OpticksOptionsAsExternal)
-  find_package(G4CX REQUIRED CONFIG)
+  find_package(Opticks REQUIRED)
+  include_directories(${OPTICKS_PREFIX}/include/G4CX
+                      ${OPTICKS_PREFIX}/include/SysRap
+                      $ENV{CUDA_INSTALL_DIR}/include
+  )
+
   find_package(U4 REQUIRED CONFIG)
 endif()
 

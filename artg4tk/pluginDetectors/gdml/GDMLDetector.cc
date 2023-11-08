@@ -68,6 +68,9 @@
 #include <unordered_map>
 #include <vector>
 
+#include "G4CXOpticks.hh"
+#include <cuda_runtime.h>
+
 using std::string;
 
 artg4tk::GDMLDetectorService::GDMLDetectorService(fhicl::ParameterSet const& p)
@@ -127,6 +130,10 @@ artg4tk::GDMLDetectorService::doBuildLVs()
   G4VPhysicalVolume* World = parser->GetWorldVolume();
   std::cout << World->GetTranslation() << std::endl << std::endl;
   std::cout << "Found World:  " << World->GetName() << std::endl;
+
+  //@@@ Integration
+  G4CXOpticks::SetGeometry(World);
+
   std::cout << "World LV:  " << World->GetLogicalVolume()->GetName() << std::endl;
   G4LogicalVolumeStore* pLVStore = G4LogicalVolumeStore::GetInstance();
   std::cout << "Found " << pLVStore->size() << " logical volumes." << std::endl << std::endl;

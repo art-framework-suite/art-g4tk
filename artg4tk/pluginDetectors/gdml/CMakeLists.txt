@@ -25,6 +25,9 @@ cet_make_library(SOURCE
     Geant4::G4tracking
   )
 
+set(OPTICKS_LIB_DIR $ENV{OPTICKS_PREFIX}/lib64)
+message(STATUS "Using Opticks Libs: ${OPTICKS_LIB_DIR}")
+
 cet_build_plugin(GDMLDetector artg4tk::DetectorService
   LIBRARIES
   PUBLIC
@@ -38,6 +41,7 @@ cet_build_plugin(GDMLDetector artg4tk::DetectorService
   Geant4::G4geometry
   Geant4::G4processes
   Geant4::G4global
+  ${OPTICKS_LIB_DIR}/libG4CX.so
 )
 
 install_headers()
