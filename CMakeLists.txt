@@ -47,16 +47,18 @@ if (CMAKE_MODULE_PATH)
 endif()
   message(STATUS "WITH_G4CXOPTICKS is set")
   list(APPEND CMAKE_MODULE_PATH "$ENV{OPTICKS_HOME}/cmake/Modules")
-  list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/modules")
   message(STATUS "*************************************************************")
   message(STATUS "CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}")
   message(STATUS "OPTICKS_HOME:  $ENV{OPTICKS_HOME}")
   message(STATUS "*************************************************************")
-  include(OpticksBuildOptions)
-  find_package(G4CX REQUIRED CONFIG)
+  include(OpticksOptionsAsExternal)
+  find_package(Opticks REQUIRED)
+  include_directories(${OPTICKS_PREFIX}/include/G4CX
+                      ${OPTICKS_PREFIX}/include/SysRap
+                      $ENV{CUDA_INSTALL_DIR}/include
+  )
+
   find_package(U4 REQUIRED CONFIG)
-  find_package(ExtG4 REQUIRED CONFIG)
-  find_package(CSG_GGeo REQUIRED CONFIG)
 endif()
 
 
