@@ -185,6 +185,21 @@ artg4tk::GDMLDetectorService::doBuildLVs()
           << "Set stepLimit for volume: " << ((*iter).first)->GetName() << " from the GDML file.";
         setGDMLVolumes_.insert(std::make_pair(((*iter).first)->GetName(), atof((*vit).value)));
       }
+      if((*vit).type == "ExcitationEnergy")
+      {
+        G4String ExcitationEnergy_category = "Energy";
+        if(provided_category == ExcitationEnergy_category)
+        {
+          G4cout << "Valid ExcitationEnergy unit category obtained: " << provided_category.c_str()
+                 << G4endl;
+          G4cout << " unit Value:" << val_unit << "  Value:  " << value << G4endl;
+          G4cout << " unit Value:" << val_unit << "  Value:  " << value / CLHEP::eV << " eV"
+                 << G4endl;
+          ((*iter).first)->GetMaterial()->GetIonisation()->SetMeanExcitationEnergy(value);
+          G4cout << " Mean Ionization energy:  "
+                 <<((*iter).first) ->GetMaterial()->GetIonisation()->GetMeanExcitationEnergy() << G4endl;
+        }
+      }
       if ((*vit).type == "SensDet") {
         if ((*vit).value == "DRCalorimeter") {
           G4String name = ((*iter).first)->GetName() + "_DRCalorimeter";
