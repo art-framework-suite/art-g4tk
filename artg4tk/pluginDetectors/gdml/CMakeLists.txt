@@ -12,7 +12,7 @@ cet_make_library(SOURCE
     PUBLIC
     artg4tk::DataProducts_G4DetectorHits
     Geant4::G4digits_hits
-    Geant4::G4persistency
+    Geant4::G4gdml
     Geant4::G4track
     canvas::canvas
     PRIVATE
@@ -25,8 +25,12 @@ cet_make_library(SOURCE
     Geant4::G4tracking
   )
 
-set(OPTICKS_LIB_DIR $ENV{OPTICKS_PREFIX}/lib64)
-message(STATUS "Using Opticks Libs: ${OPTICKS_LIB_DIR}")
+if(WITH_G4CXOPTICKS)
+  set(OPTICKS_LIB_DIR $ENV{OPTICKS_PREFIX}/lib64)
+  message(STATUS "Using Opticks Libs: ${OPTICKS_LIB_DIR}")
+  set(G4CX_LIB ${OPTICKS_LIB_DIR}/libG4CX.so)
+  message(STATUS "Using Opticks Lib: ${G4CX_LIB}")
+endif()
 
 cet_build_plugin(GDMLDetector artg4tk::DetectorService
   LIBRARIES
@@ -41,7 +45,7 @@ cet_build_plugin(GDMLDetector artg4tk::DetectorService
   Geant4::G4geometry
   Geant4::G4processes
   Geant4::G4global
-  ${OPTICKS_LIB_DIR}/libG4CX.so
+  ${G4CX_LIB}
 )
 
 install_headers()
