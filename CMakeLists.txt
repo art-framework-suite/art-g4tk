@@ -13,7 +13,7 @@
 cmake_minimum_required (VERSION 3.20 FATAL_ERROR)
 
 find_package(cetmodules 3.10.00 REQUIRED) # For FindGeant4.cmake
-project(artg4tk VERSION 12.00.00 LANGUAGES CXX)
+project(artg4tk VERSION 13.00.00 LANGUAGES CXX)
 option(WITH_G4CXOPTICKS "Build example with OPTICKS" OFF)
 
 include(CetCMakeEnv)
