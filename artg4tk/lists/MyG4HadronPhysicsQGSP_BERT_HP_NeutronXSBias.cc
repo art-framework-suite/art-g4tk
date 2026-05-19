@@ -104,8 +104,14 @@ MyG4HadronPhysicsQGSP_BERT_HP_NeutronXSBias::CreateModels()
   tpdata->theHyperon = new G4HyperonFTFPBuilder;
 
   tpdata->theAntiBaryon = new G4AntiBarionBuilder;
+#if G4VERSION_NUMBER >= 1140
+  // tpdata->theFTFPAntiBaryon = new G4FTFPAntiBarionBuilder;
+  tpdata->theQGSPAntiBaryon = new G4QGSPAntiBarionBuilder(quasiElasticQGS);
+  // tpdata->theQGSPAntiBaryon->RegisterMe(tpdata->theQGSPAntiBaryon);
+#else
   tpdata->theAntiBaryon->RegisterMe(tpdata->theFTFPAntiBaryon =
-                                      new G4FTFPAntiBarionBuilder(quasiElasticFTF));
+                                    new G4FTFPAntiBarionBuilder(quasiElasticFTF));
+#endif
 }
 
 MyG4HadronPhysicsQGSP_BERT_HP_NeutronXSBias::~MyG4HadronPhysicsQGSP_BERT_HP_NeutronXSBias()
@@ -126,7 +132,12 @@ MyG4HadronPhysicsQGSP_BERT_HP_NeutronXSBias::~MyG4HadronPhysicsQGSP_BERT_HP_Neut
   delete tpdata->theQGSPPro;
   delete tpdata->theFTFPPro;
   delete tpdata->thePro;
+#if G4VERSION_NUMBER >= 1140
+  //delete tpdata->theFTFPAntiBaryon;
+  delete tpdata->theQGSPAntiBaryon;
+#else
   delete tpdata->theFTFPAntiBaryon;
+#endif
   delete tpdata->theAntiBaryon;
   delete tpdata->theHyperon;
 
@@ -175,6 +186,9 @@ MyG4HadronPhysicsQGSP_BERT_HP_NeutronXSBias::ConstructProcess()
 
   tpdata->theHyperon->Build();
   tpdata->theAntiBaryon->Build();
+#if G4VERSION_NUMBER >= 1140
+  tpdata->theQGSPAntiBaryon->Build();
+#endif
 
   // --- Neutrons ---
   G4HadronicProcess* capture = 0;

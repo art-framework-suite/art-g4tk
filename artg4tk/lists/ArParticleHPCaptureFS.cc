@@ -305,8 +305,13 @@ void
 ArParticleHPCaptureFS::Init(G4double A,
                             G4double Z,
                             G4int M,
+#if G4VERSION_NUMBER >= 1130
+                            const G4String& dirName,
+                            const G4String&,
+#else
                             G4String& dirName,
                             G4String&,
+#endif
                             G4ParticleDefinition*)
 {
 
