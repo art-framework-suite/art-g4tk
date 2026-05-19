@@ -19,6 +19,7 @@
 // -- artg4tk includes
 #include "artg4tk/lists/ArCaptureGammas.hh"
 
+#include "Geant4/G4Version.hh"
 #include "Geant4/G4HadFinalState.hh"
 #include "Geant4/G4HadProjectile.hh"
 #include "Geant4/G4ParticleHPEnAngCorrelation.hh"
@@ -40,8 +41,13 @@ public:
   void Init(G4double A,
             G4double Z,
             G4int M,
+#if G4VERSION_NUMBER >= 1130
+            const G4String& dirName,
+            const G4String& aFSType,
+#else
             G4String& dirName,
             G4String& aFSType,
+#endif
             G4ParticleDefinition*) override;
   G4HadFinalState* ApplyYourself(const G4HadProjectile& theTrack) override;
   G4ParticleHPFinalState*

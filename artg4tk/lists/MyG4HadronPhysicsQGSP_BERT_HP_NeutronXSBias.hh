@@ -1,6 +1,7 @@
 #ifndef MyG4HadronPhysicsQGSP_BERT_HP_NeutronXSBias_h
 #define MyG4HadronPhysicsQGSP_BERT_HP_NeutronXSBias_h 1
 
+#include "G4Version.hh"
 #include "Geant4/G4ios.hh"
 #include "Geant4/globals.hh"
 
@@ -28,7 +29,11 @@
 
 // -- Other builders
 #include "Geant4/G4AntiBarionBuilder.hh"
+#if G4VERSION_NUMBER >= 1140
+#include "Geant4/G4QGSPAntiBarionBuilder.hh"
+#else
 #include "Geant4/G4FTFPAntiBarionBuilder.hh"
+#endif
 #include "Geant4/G4HyperonFTFPBuilder.hh"
 
 class G4ComponentGGHadronNucleusXsc;
@@ -68,7 +73,11 @@ private:
     G4HyperonFTFPBuilder* theHyperon;
 
     G4AntiBarionBuilder* theAntiBaryon;
+#if G4VERSION_NUMBER >= 1140
+    G4QGSPAntiBarionBuilder* theQGSPAntiBaryon;
+#else
     G4FTFPAntiBarionBuilder* theFTFPAntiBaryon;
+#endif
 
     G4ComponentGGHadronNucleusXsc* xsKaon;
     G4VCrossSectionDataSet* xsNeutronCaptureXS;
