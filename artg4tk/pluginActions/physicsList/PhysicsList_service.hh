@@ -1,5 +1,7 @@
 // Here we define the physics list
 
+#include "Geant4/G4Version.hh"
+
 #ifndef artg4tk_pluginActions_physicsList_PhysicsList_service_hh
 #define artg4tk_pluginActions_physicsList_PhysicsList_service_hh
 
@@ -22,13 +24,22 @@ namespace artg4tk {
     std::string PhysicsListName_;
     bool DumpList_;           // enable/disable dumping of physics list
     bool enableNeutronLimit_; // enable/register neutron time limit physics constructor
-    double NeutronTimeLimit_;
-    double NeutronKinELimit_;
+    double NeutronTimeLimit_; // neutrons are killed after this time (ns)
+    double NeutronKinELimit_; // neutrons are killed below this energy
     bool enableStepLimit_; // enable/register step limit physics construct
                            // Note the that the limit is a material property
                            // the values is set in the gdml file
 
+#if G4VERSION_NUMBER > 1140 && G4VERSION_NUMBER < 9999
     //-----------------------------------------------------------------------------------
+    // Options to tweak physics models
+    bool enableNuDEX_;
+    bool enableBertiniAngularEmissionsAs112_;
+    bool enableBertiniNucleiModelAs112_;
+#endif
+
+    //-----------------------------------------------------------------------------------
+    // Optical configuration parameters
     bool enableOptical_; // enable/register optical physics construct
     // the following variables are ignored in case optical is false:
     bool enableCerenkov_;       // enable/disable Cerenkov process

@@ -3,11 +3,14 @@
 #include "artg4tk/pluginActions/physicsList/PhysicsList_service.hh"
 #include "fhiclcpp/ParameterSet.h"
 
-#include "G4Version.hh"
+#include "Geant4/G4Version.hh"
+#include "Geant4/globals.hh"
+#include "Geant4/G4ios.hh"
 #include "Geant4/G4PhysListFactoryAlt.hh"
 #include "Geant4/G4PhysListRegistry.hh"
 #include "Geant4/G4PhysicsConstructorRegistry.hh"
 #include "Geant4/G4VModularPhysicsList.hh"
+#include "Geant4/G4HadronicParameters.hh"
 
 // geant 4 physics constructors:
 #include "Geant4/G4NeutronTrackingCut.hh"
@@ -28,6 +31,11 @@ artg4tk::PhysicsListService::PhysicsListService(fhicl::ParameterSet const& p)
   , NeutronTimeLimit_(p.get<double>("NeutronTimeLimit", 10. * microsecond))
   , NeutronKinELimit_(p.get<double>("NeutronKinELimit", 0.0))
   , enableStepLimit_(p.get<bool>("enableStepLimit", true))
+#if G4VERSION_NUMBER > 1140 && G4VERSION_NUMBER < 9999
+  , enableNuDEX_(p.get<bool>("enableNuDEX",false))
+  , enableBertiniAngularEmissionsAs112_(p.get<bool>("enableBertiniAngularEmissionsAs112",true))
+  , enableBertiniNucleiModelAs112_(p.get<bool>("enableBertiniNucleiModelAs112",true))
+#endif
   , enableOptical_(p.get<bool>("enableOptical", true))
   , enableCerenkov_(p.get<bool>("enableCerenkov", false))
   , CerenkovStackPhotons_(p.get<bool>("CerenkovStackPhotons", false))
@@ -53,6 +61,22 @@ G4VUserPhysicsList*
 artg4tk::PhysicsListService::makePhysicsList()
 {
 
+#if G4VERSION_NUMBER >= 1140
+  // these must be called before the creation of a physics list
+  auto hadparam = G4HadronicParameters::Instance();
+  std::cout << "enableNuDEX " << enableNuDEX_ << std::endl;
+  hadparam->SetEnableNUDEX(enableNuDEX_);
+#if G4VERSION_NUMBER < 9999
+  // these are subject to elimination in future versions
+  std::cout << "enableBertini as 11_2:  "
+            << " AngularEmissions " << enableBertiniAngularEmissionsAs112_
+            << " NucleiMode " << enableBertiniNucleiModelAs112_
+            << std::endl;
+  hadparam->SetBertiniAngularEmissionsAs11_2(enableBertiniAngularEmissionsAs112_);
+  hadparam->SetBertiniNucleiModelAs11_2(enableBertiniNucleiModelAs112_);
+#endif
+#endif
+
   g4alt::G4PhysListFactory factory;
   // Access to registries and factories
   //
@@ -64,8 +88,6 @@ artg4tk::PhysicsListService::makePhysicsList()
   g4plr->AddPhysicsExtension("OPTICAL", "G4OpticalPhysics");
   g4plr->AddPhysicsExtension("STEPLIMIT", "G4StepLimiterPhysics");
   g4plr->AddPhysicsExtension("NEUTRONLIMIT", "G4NeutronTrackingCut");
-  g4pcr->PrintAvailablePhysicsConstructors();
-  g4plr->PrintAvailablePhysLists();
   G4VModularPhysicsList* phys = NULL;
   G4String physName = PhysicsListName_;
   if (enableOptical_)
@@ -74,10 +96,20 @@ artg4tk::PhysicsListService::makePhysicsList()
     physName = physName + "+STEPLIMIT";
   if (enableNeutronLimit_)
     physName = physName + "+NEUTRONLIMIT";
-  std::cout << " Name of Physics list: " << physName << std::endl;
+  std::cout << "Name of Physics list: " << physName << std::endl;
   if (factory.IsReferencePhysList(physName)) {
     phys = factory.GetReferencePhysList(physName);
-    phys->SetVerboseLevel(verbositylevel_);
+    if (phys) phys->SetVerboseLevel(verbositylevel_);
+  }
+  if (!phys) {
+    std::cout << "Failed to construct physics list" << std::endl;
+    g4plr->PrintAvailablePhysLists();
+    g4pcr->PrintAvailablePhysicsConstructors();
+    G4ExceptionDescription ed;
+    ed << "ERROR: The requested physics list " << physName << "\n"
+       << "could NOT be constructed by the Alt Physics List Factory.\n";
+    G4Exception("artg4tk/PhysicsList","artg4tk0001", FatalException, ed);
+    exit(1);
   }
 
   if (enableOptical_) {
@@ -123,11 +155,15 @@ artg4tk::PhysicsListService::makePhysicsList()
   if (enableNeutronLimit_) {
     G4NeutronTrackingCut* neutrcut = (G4NeutronTrackingCut*)phys->GetPhysics("neutronTrackingCut");
     neutrcut->SetTimeLimit(NeutronTimeLimit_);
+    neutrcut->SetKineticEnergyLimit(NeutronKinELimit_);
   }
   if (DumpList_) {
     std::cout << phys->GetPhysicsTableDirectory() << std::endl;
     phys->DumpList();
     phys->DumpCutValuesTable();
+    // print hadronic physics parameters that aren't otherwise output
+    G4HadronicParameters::Instance()->Dump();
   }
+
   return phys;
 }
